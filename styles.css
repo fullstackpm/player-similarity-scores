@@ -1,0 +1,77 @@
+/* body{
+    background: #352f5b;
+  }
+  .container{
+    max-width: 400px;
+  }
+  input[type=text],
+  input[type=text]:focus{
+    color: #fff;
+    border: none;
+    background: rgba(0,0,0,0.2);
+    max-width: 400px;
+  }
+  .players li{
+    background: #423a6f;
+    cursor: pointer;
+  }
+.cross {
+    display: none;
+    cursor: pointer;
+}
+.list-group-item.selected .cross {
+    display: inline;
+}
+
+.filtered {
+    display: none !important;
+}
+.similar-players {
+    display: none;
+}
+*/
+
+body {
+    background: #352f5b;
+}
+
+.container {
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+input[type="text"],
+input[type="text"]:focus {
+    color: #fff;
+    border: none;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.players {
+    max-height: 300px; /* Set the maximum height of the list */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    margin-top: 20px;
+    padding-left: 0;
+}
+
+.players li {
+    background: #423a6f;
+    cursor: pointer;
+}
+
+.cross {
+    display: none;
+    cursor: pointer;
+}
+
+.list-group-item.selected .cross {
+    display: inline;
+}
+
+.filtered {
+    display: none !important;
+}
+
+.similar-players {
+    display: none; /* Initially hidden */
+}
