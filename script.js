@@ -72,73 +72,152 @@ function filterPlayers(term) {
     });
 }
 
-// Function to handle selecting a player
+// Placeholder for Euclidean distance calculation
+function calculateEuclideanDistance(playerA, playerB) {
+    const attributes = [
+        'crosses_into_penalty_area', 'interceptions', 'key_passes',
+        'passes_into_final_third', 'passes_into_penalty_area', 
+        'progressive_carries', 'shots_on_target_per_90', 'shots_per_90',
+        'successful_take_ons', 'tackles', 'take_ons_attempted', 
+        'through_balls', 'total_carries'
+    ];
+
+    let sumSquares = 0;
+
+    attributes.forEach(attr => {
+        const a = playerA[attr] || 0; // Use 0 if the attribute is missing
+        const b = playerB[attr] || 0;
+        const diff = a - b;
+        sumSquares += diff * diff;
+    });
+
+    return Math.sqrt(sumSquares);
+}
+
+// Function to reverse distance to similarity score
+function calculateSimilarityScore(distance, maxDistance) {
+    return 1 - distance / maxDistance; // Reversing the similarity
+}
+
+// Function to populate the similar players section
+function populateSimilarPlayers(distances) {
+    const similarPlayersSection = document.querySelector('.similar-players-section');
+    const similarPlayersList = document.querySelector('.similar-players');
+
+    similarPlayersList.innerHTML = ''; // Clear previous list
+
+    if (!distances || distances.length === 0) {
+        similarPlayersList.innerHTML = '<li class="list-group-item text-center">No similar players found.</li>';
+        similarPlayersSection.style.display = 'block'; // Show the section
+        return;
+    }
+
+    // Add players to the similar players list (up to 5)
+    distances.slice(0, 5).forEach(player => {
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+        listItem.textContent = `${player.player_name} (Similarity: ${player.similarityScore.toFixed(2)})`;
+
+        similarPlayersList.appendChild(listItem);
+    });
+
+    similarPlayersSection.style.display = 'block'; // Show the section
+}
+
+// Function to calculate distances of all players from the selected player
+function calculateDistances(selectedPlayer) {
+    if (!selectedPlayer) {
+        console.log("No player selected for comparison.");
+        return;
+    }
+
+    const maxDistance = 100; // Adjust this based on the expected range of the Euclidean distance
+
+    const distances = data.players.map(otherPlayer => {
+        if (otherPlayer.id === selectedPlayer.id) return null; // Skip the selected player
+
+        const distance = calculateEuclideanDistance(selectedPlayer, otherPlayer);
+        const similarityScore = calculateSimilarityScore(distance, maxDistance);
+
+        return { ...otherPlayer, similarityScore };
+    }).filter(Boolean); // Remove null entries
+
+    // Sort by similarity score (highest to lowest)
+    distances.sort((a, b) => b.similarityScore - a.similarityScore);
+
+    // Populate the similar players section
+    populateSimilarPlayers(distances);
+
+    return distances; // Return sorted distances
+}
+
+// Function to select a player
 function selectPlayer(playerItem) {
-    resetSelection(); // Clear previous selections
+    resetSelection();
 
     currentSelectedPlayer = playerItem;
-    playerItem.classList.add('selected'); // Mark as selected to show the cross icon
+    playerItem.classList.add('selected');
 
-    // Hide all other list items except the selected one
     Array.from(list.children).forEach(item => {
         if (item !== playerItem) {
-            item.classList.add('filtered'); // Hide non-selected items
+            item.classList.add('filtered');
         }
     });
 
-    // Show the similar players form
-    similarPlayersForm.style.display = 'block'; // Show the similar players section
-
-    // Retrieve player data using the unique ID
     const playerId = parseInt(playerItem.getAttribute('data-player-id'), 10);
     const playerName = playerItem.getAttribute('data-player-name');
 
-    // Find the exact player data by ID
     const playerData = players[playerName].find(p => p.id === playerId);
 
     if (playerData) {
-        console.log(playerData); // Log full player data
+        console.log('Selected Player:', playerData);
+
+        // Calculate distances for the selected player
+        calculateDistances(playerData);
     } else {
         console.log("No player found with that ID.");
     }
 }
 
-// Function to reset selection and show all players
+// Function to reset player selection
 function resetSelection() {
+    // Unselect all list items and remove any filtering
     Array.from(list.children).forEach(item => {
-        item.classList.remove('filtered', 'selected'); // Remove filtering and selection
+        item.classList.remove('filtered', 'selected');
     });
-    currentSelectedPlayer = null; // Clear the selected player
 
-    // Hide the similar players form when no player is selected
-    similarPlayersForm.style.display = 'none'; // Hide the similar players section
+    // Clear the current selection
+    currentSelectedPlayer = null;
+
+    // Hide the similar players section
+    const similarPlayersSection = document.querySelector('.similar-players-section');
+    if (similarPlayersSection) {
+        similarPlayersSection.style.display = 'none'; // Safely hide the section
+    }
 }
 
 // Event listener for player selection
 list.addEventListener('click', (e) => {
     let targetItem = e.target;
 
-    // If the cross icon is clicked, reset the selection
     if (targetItem.classList.contains('cross')) {
         resetSelection();
         return;
     }
 
-    // Traverse up to find the parent <li> if a child was clicked
     while (targetItem && !targetItem.classList.contains('list-group-item')) {
         targetItem = targetItem.parentElement;
     }
 
-    // Check if this item is already selected or not
     if (targetItem && targetItem !== currentSelectedPlayer) {
-        selectPlayer(targetItem); // Select this player if not already selected
+        selectPlayer(targetItem); 
     }
 });
 
 // Event listener for search input
 search.addEventListener('keyup', () => {
     const term = search.value.trim();
-    filterPlayers(term); // Filter players based on the search term
+    filterPlayers(term); 
 });
 
 // Load data when the page is ready

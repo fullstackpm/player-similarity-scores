@@ -4,32 +4,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link href="../2-k_nearest_neighbours_recommendation_engine/styles.css" type="text/css" rel="stylesheet">
     <title>StatPadder</title>
 </head>
 <body>
 
     <div class="container">
-
         <header class="text-center text-light my-4">
-          <h1 class="mb-4">StatPadder</h1>
-          <form class="search">
-            <input class="form-control m-auto" type="text" name="search" placeholder="search players" />
-          </form>
+            <h1 class="mb-4">StatPadder</h1>
+            <form class="search">
+                <input class="form-control m-auto" type="text" name="search" placeholder="search players" />
+            </form>
         </header>
     
-        <ul class="list-group players mx-auto text-light">
-        </ul>
+        <ul class="list-group players mx-auto text-light"></ul>
     
         <!-- Initially hidden similar players section -->
-        <form class="add text-center my-4 similar-players" style="display: none;">
-          <label class="text-light">Similar Players</label>
-          <input class="form-control m-auto" type="text" name="add" />
-        </form>
+        <div class="similar-players-section my-4">
+            <h5 class="text-light">Similar Players</h5>
+            <button type="button" class="btn btn-light compareButton">Compare</button>
+            <ul class="list-group similar-players mx-auto text-light"></ul>
+        </div>
+    </div>
     
-      </div>
       
-    
-    <script type="module" src="script.js"></script>
+    <script type="module" src="scripts/data.js"></script>
+    <script type="module" src="scripts/ui.js"></script>
+    <script type="module" src="scripts/filters.js"></script>
+    <script type="module" src="scripts/main.js"></script>
+    <script type="module" src="scripts/compare.js"></script>
+
+
+    <!-- <script type="module" src="script.js"></script> -->
 </body>
 </html>
