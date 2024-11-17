@@ -11,19 +11,28 @@ export function filterPlayers(term, list) {
     });
 }
 
-export function calculateEuclideanDistance(playerA, playerB) {
-    const attributes = [
-        'crosses_into_penalty_area', 'interceptions', 'key_passes',
-        'passes_into_final_third', 'passes_into_penalty_area', 
-        'progressive_carries', 'shots_on_target_per_90', 'shots_per_90',
-        'successful_take_ons', 'tackles', 'take_ons_attempted', 
-        'through_balls', 'total_carries'
-    ];
+export function computeAttributeStats(players, attributes) {
+    const stats = {};
 
+    attributes.forEach(attr => {
+        const values = players.map(player => player[attr] || 0); // Handle missing values as 0
+        const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+        const variance = values.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / values.length;
+        const stdDev = Math.sqrt(variance);
+
+        stats[attr] = { mean, stdDev };
+    });
+
+    return stats;
+}
+
+
+export function calculateEuclideanDistance(playerA, playerB, attributes) {
     let sumSquares = 0;
 
     attributes.forEach(attr => {
-        const a = playerA[attr] || 0;
+        // Use the raw attribute values without standardization
+        const a = playerA[attr] || 0; // Default to 0 if the attribute is missing
         const b = playerB[attr] || 0;
         const diff = a - b;
         sumSquares += diff * diff;

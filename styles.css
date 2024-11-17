@@ -77,26 +77,27 @@ button.compare-button:hover {
     background: #218838;
 }
 
-.comparison-table-section {
-    margin-top: 20px;
+.table-responsive {
+    display: none; /* Hide the table initially */
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.table {
+    color: white; /* Set the text color to white */
 }
 
-table th, table td {
-    padding: 10px;
-    border: 1px solid #ddd;
+.table th, .table td {
+    color: white; /* Ensure both header and cell text are white */
 }
 
-table th {
-    background-color: #4b437e;
-    color: #fff;
+.table tbody tr {
+    color: white; /* Set the text color for rows in the body */
 }
 
 .compareButton {
     padding: 0 5px;
     margin: 10 0px;
+}
+
+.back-button {
+    display: none;
 }

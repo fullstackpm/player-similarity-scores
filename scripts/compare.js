@@ -1,98 +1,73 @@
-// compare.js
-
 let currentSelectedPlayerData = null;
 let currentSimilarPlayers = [];
 
 // Function to create the "Compare" button
 export function createCompareButton() {
-    const button = document.querySelector('.compareButton');
-    // if (existingButton) return;
+    const existingButton = document.querySelector('.compare-button');
+    if (existingButton) return;
 
-    // const compareButton = document.createElement('button');
-    // compareButton.textContent = 'Compare';
-    // compareButton.classList.add('btn', 'btn-primary', 'compare-button');
-    // compareButton.style.marginTop = '10px';
+    const compareButton = document.createElement('button');
+    compareButton.textContent = 'Compare';
+    compareButton.classList.add('btn', 'btn-primary', 'compare-button');
+    compareButton.style.marginTop = '10px';
 
     const similarPlayersSection = document.querySelector('.similar-players-section');
-    similarPlayersSection.appendChild(button);
+    similarPlayersSection.appendChild(compareButton);
 
-    button.addEventListener('click', () => {
+    compareButton.addEventListener('click', () => {
         displayComparisonTable();
     });
 }
 
 // Function to display the comparison table
-function displayComparisonTable() {
+export function displayComparisonTable() {
     if (!currentSelectedPlayerData || currentSimilarPlayers.length === 0) {
         console.error("No players available for comparison.");
         return;
     }
 
-    const tableSection = document.querySelector('.comparison-table-section') || createComparisonTableSection();
-    const table = document.createElement('table');
-    table.classList.add('table', 'table-striped', 'comparison-table');
+    const tableContainer = document.querySelector('.table-responsive');
+    const tableBody = document.querySelector('.table tbody');
 
-    const headerRow = document.createElement('tr');
-    table.appendChild(headerRow);
+    // Clear the table body
+    tableBody.innerHTML = '';
 
-    const attributesRow = document.createElement('tr');
-    headerRow.innerHTML = `<th>Attribute</th>`;
+    // Combine the selected player with the similar players
     const allPlayers = [currentSelectedPlayerData, ...currentSimilarPlayers];
 
-    // Add player headers in the table
-    allPlayers.forEach(player => {
-        const playerHeader = document.createElement('th');
-        playerHeader.textContent = player.player_name;
-        headerRow.appendChild(playerHeader);
-    });
-
-    // Attributes for comparison
-    const attributes = [
-        'crosses_into_penalty_area', 'interceptions', 'key_passes', 
-        'passes_into_final_third', 'passes_into_penalty_area',
-        'progressive_carries', 'shots_on_target_per_90', 'shots_per_90',
-        'successful_take_ons', 'tackles', 'take_ons_attempted',
-        'through_balls', 'total_carries'
-    ];
-
-    // Create rows for each attribute
-    attributes.forEach(attr => {
+    // Populate rows
+    allPlayers.forEach((player, index) => {
         const row = document.createElement('tr');
-        const attrCell = document.createElement('td');
-        attrCell.textContent = formatAttributeName(attr);
-        row.appendChild(attrCell);
 
-        allPlayers.forEach(player => {
-            const valueCell = document.createElement('td');
-            valueCell.textContent = player[attr] ? player[attr] : '-';
-            row.appendChild(valueCell);
-        });
+        row.innerHTML = `
+            <th scope="row">${index + 1}</th>
+            <td>${player.player_name}</td>
+            <td>${player.age_years}</td>
+            <td>${player.player_position}</td>
+            <td>${player.crosses_into_penalty_area || '-'}</td>
+            <td>${player.key_passes || '-'}</td>
+            <td>${player.passes_into_final_third || '-'}</td>
+            <td>${player.passes_into_penalty_area || '-'}</td>
+            <td>${player.progressive_carries || '-'}</td>
+            <td>${player.shots_on_target_per_90 || '-'}</td>
+            <td>${player.shots_per_90 || '-'}</td>
+            <td>${player.successful_take_ons || '-'}</td>
+            <td>${player.tackles || '-'}</td>
+            <td>${player.interceptions || '-'}</td>
+            <td>${player.take_ons_attempted || '-'}</td>
+            <td>${player.through_balls || '-'}</td>
+            <td>${player.total_carries || '-'}</td>
+        `;
 
-        table.appendChild(row);
+        tableBody.appendChild(row);
     });
 
-    // Append the table to the table section
-    tableSection.innerHTML = '';
-    tableSection.appendChild(table);
+    // Show the table
+    tableContainer.style.display = 'block';
 }
 
-// Helper function to create the comparison table section
-function createComparisonTableSection() {
-    const tableSection = document.createElement('div');
-    tableSection.classList.add('comparison-table-section');
-    const container = document.querySelector('.container');
-    container.appendChild(tableSection);
-    return tableSection;
-}
 
-// Format attribute names for display
-function formatAttributeName(attribute) {
-    return attribute
-        .replace(/_/g, ' ') // Replace underscores with spaces
-        .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize the first letter of each word
-}
-
-// Function to set the current selected player and similar players for comparison
+// Set selected player and similar players
 export function setComparisonData(selectedPlayer, similarPlayers) {
     currentSelectedPlayerData = selectedPlayer;
     currentSimilarPlayers = similarPlayers;
