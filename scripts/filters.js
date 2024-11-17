@@ -42,5 +42,15 @@ export function calculateEuclideanDistance(playerA, playerB, attributes) {
 }
 
 export function calculateSimilarityScore(distance, maxDistance) {
-    return 1 - distance / maxDistance;
+    let similarity = 1 - (distance / maxDistance);
+
+    // Clamp the similarity score between 0 and 1
+    similarity = Math.max(0, Math.min(1, similarity));
+
+    return similarity;
 }
+
+
+// export function calculateSimilarityScore(distance, maxDistance) {
+//     return 1 - distance;
+// }

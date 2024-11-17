@@ -1,5 +1,5 @@
 body {
-    background: #352f5b;
+    background: #1D1D1B;
 }
 
 .container {
@@ -22,7 +22,7 @@ input[type="text"]:focus {
 }
 
 .players li {
-    background: #423a6f;
+    background: #313131;
     cursor: pointer;
     color: #fff;
     padding: 10px;
@@ -42,7 +42,7 @@ input[type="text"]:focus {
 }
 
 .similar-players li {
-    background: #4b437e;
+    background: #313131;
     cursor: pointer;
     color: #fff;
     padding: 10px;
@@ -65,7 +65,7 @@ input[type="text"]:focus {
 }
 
 button.compare-button {
-    background: #28a745;
+    /* background: #28a745; */
     color: white;
     padding: 10px 20px;
     border: none;
@@ -74,7 +74,7 @@ button.compare-button {
 }
 
 button.compare-button:hover {
-    background: #218838;
+    /* background: #218838; */
 }
 
 .table-responsive {
@@ -83,10 +83,13 @@ button.compare-button:hover {
 
 .table {
     color: white; /* Set the text color to white */
+    margin: 10px 0;
+    background-color: #313131;
 }
 
 .table th, .table td {
     color: white; /* Ensure both header and cell text are white */
+    white-space: nowrap;    
 }
 
 .table tbody tr {
@@ -100,4 +103,9 @@ button.compare-button:hover {
 
 .back-button {
     display: none;
+}
+
+.selected-player {
+    background-color: #d1e7dd; /* Light green background */
+    font-weight: bold;
 }

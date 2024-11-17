@@ -40,7 +40,7 @@ export function displayComparisonTable() {
         const row = document.createElement('tr');
 
         row.innerHTML = `
-            <th scope="row">${index + 1}</th>
+            <th scope="row">${index}</th>
             <td>${player.player_name}</td>
             <td>${player.age_years}</td>
             <td>${player.player_position}</td>

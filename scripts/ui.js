@@ -33,7 +33,7 @@ export function populateSimilarPlayers(distances, container, section) {
         listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
         listItem.innerHTML = `
         ${player.player_name}, ${player.current_club_name}, ${player.age_years}, ${player.player_position} <br>
-        Similarity: ${(player.similarityScore * 100).toFixed(2)}%
+        Similarity: ${(player.similarityScore * 100).toFixed(0)}%
         `;
         container.appendChild(listItem);
     });

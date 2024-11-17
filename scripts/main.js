@@ -29,7 +29,7 @@ let attributeStats = null; // Initialize as null, it will be set after data is l
 
 async function initialize() {
     // Load the player data asynchronously
-    data = await loadData('player_data_large.json');
+    data = await loadData('player_data.json');
     if (!data) return;
 
     // Create the player lookup table
